@@ -9,7 +9,8 @@ import random
 import numpy as np
 from PIL import Image
 
-
+#Calculates the means of the different segments in the image based on the theresholds
+#and pixels in each segement
 def recalculate_means(org_image_array, object_detection_img, n) :
     count_each_segment = np.zeros(n+1)
     means_array = np.zeros(n+1)
@@ -21,7 +22,12 @@ def recalculate_means(org_image_array, object_detection_img, n) :
         means_array[i] = means_array[i] / count_each_segment[i]
     return means_array
 
-
+#calculate the theresholds based on the different calculated means
+def recalculate_theresholds(means_array) :
+    thereshold_array = np.zeros(means_array.size-1)
+    for i in range(thereshold_array.size) :
+        thereshold_array[i] = (means_array[i] + means_array[i+1]) / 2
+    return thereshold_array
 
 #The function should take as inputs the image to be
 #segmented and n. The function should return the computed n thresholds, a binary image for each segment
@@ -33,6 +39,7 @@ def detect_objects(org_image, n) :
     for i in range(n) :
         thereshold_array[i] = random.randint(0,255)
     np.sort(thereshold_array)
+    print(thereshold_array)
     org_image_array = np.array(org_image)
     object_detection_img = np.zeros(org_image_array.shape[0]*org_image_array.shape[1]).reshape(org_image_array.shape[0], org_image_array.shape[1])
     
@@ -59,10 +66,10 @@ def detect_objects(org_image, n) :
             means_changed = False
         else :
             means_array = new_means_array
-        
+            thereshold_array = recalculate_theresholds(means_array)
 
 image_filepath = "GUC.jpg"
 org_image = Image.open(image_filepath)
-detect_objects(org_image, 2)                
+detect_objects(org_image, 1)                
 
 #detect_objects(None,4)

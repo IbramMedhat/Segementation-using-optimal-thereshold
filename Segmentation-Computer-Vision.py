@@ -32,7 +32,7 @@ def detect_objects(org_image, n) :
     #Using Random initialization for n theresholds
     for i in range(n) :
         thereshold_array[i] = random.randint(0,255)
-    print(thereshold_array)
+    np.sort(thereshold_array)
     org_image_array = np.array(org_image)
     object_detection_img = np.zeros(org_image_array.shape[0]*org_image_array.shape[1]).reshape(org_image_array.shape[0], org_image_array.shape[1])
     
@@ -48,12 +48,13 @@ def detect_objects(org_image, n) :
                         if(org_image_array[x][y] < thereshold_array[i]) :
                             object_detection_img[x][y] = i
                     else : 
-                        if(org_image_array[x][y] < thereshold_array[i] and org_image_array[x][y] > thereshold_array[i]) :
+                        if(org_image_array[x][y] < thereshold_array[i] and org_image_array[x][y] > thereshold_array[i-1]) :
                             object_detection_img[x][y] = i
+                            #print("here")
                     if(org_image_array[x][y] > thereshold_array[n-1]) :
-                        object_detection_img[x][y] = n
+                        object_detection_img[x][y] = n    
         new_means_array = recalculate_means(org_image_array, object_detection_img, n)
-        print(new_means_array)
+        print(new_means_array) 
         if(np.array_equal(means_array,new_means_array)) :
             means_changed = False
         else :
@@ -62,6 +63,6 @@ def detect_objects(org_image, n) :
 
 image_filepath = "GUC.jpg"
 org_image = Image.open(image_filepath)
-detect_objects(org_image, 1)                
+detect_objects(org_image, 2)                
 
 #detect_objects(None,4)

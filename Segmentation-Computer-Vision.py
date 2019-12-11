@@ -46,7 +46,7 @@ def detect_objects(org_image, n) :
     #Using Random initialization for n theresholds
     for i in range(n) :
         thereshold_array[i] = random.randint(0,255)
-    np.sort(thereshold_array)
+    thereshold_array = np.sort(thereshold_array,axis=None)
     print(thereshold_array)
     org_image_array = np.array(org_image)
     object_detection_img = np.zeros(org_image_array.shape[0]*org_image_array.shape[1]).reshape(org_image_array.shape[0], org_image_array.shape[1])
@@ -79,11 +79,12 @@ def detect_objects(org_image, n) :
     segmented_image_array = generate_gray_segmented_image(object_detection_img, thereshold_array)
     segmented_image = Image.fromarray(segmented_image_array)
     segmented_image = segmented_image.convert("L")
-    return segmented_image
+    return segmented_image, thereshold_array
     
 image_filepath = "GUC"
 org_image = Image.open(image_filepath + ".jpg")
-segmented_image = detect_objects(org_image, 2)                
+segmented_image, thereshold_array = detect_objects(org_image, 3)
+print(thereshold_array)                
 segmented_image.save(image_filepath + "_segmented image.jpg")
 
 #detect_objects(None,4)

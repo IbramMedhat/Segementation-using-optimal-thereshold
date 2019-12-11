@@ -81,9 +81,9 @@ def detect_objects(org_image, n) :
     segmented_image = segmented_image.convert("L")
     return segmented_image
     
-image_filepath = "GUC.jpg"
-org_image = Image.open(image_filepath)
+image_filepath = "GUC"
+org_image = Image.open(image_filepath + ".jpg")
 segmented_image = detect_objects(org_image, 2)                
-segmented_image.save(image_filepath + "segmented image.jpg")
+segmented_image.save(image_filepath + "_segmented image.jpg")
 
 #detect_objects(None,4)

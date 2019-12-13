@@ -133,6 +133,9 @@ def segment(org_img_array, num_of_thresholds, image_filepath):
     segmented_image, threshold_array = detect_objects(org_img_array, num_of_thresholds)
     segmented_image.save(image_filepath + "_" + str(num_of_thresholds) + ".jpg")
     
+    with open("Thresholds_" + str(num_of_thresholds) + ".txt",  "w") as f:
+        f.write(str(threshold_array))
+        
     # Extract binary images based on computed segmentations
     all_images, all_objects = extract_objects(org_img_array, threshold_array)
     for i in range(len(all_images)):
